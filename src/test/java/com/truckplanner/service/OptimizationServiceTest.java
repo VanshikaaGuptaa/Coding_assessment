@@ -7,7 +7,7 @@ import com.truckplanner.dto.TruckDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +32,8 @@ class OptimizationServiceTest {
         req.setTruck(truck);
 
         List<OrderDto> orders = new ArrayList<>();
-        orders.add(createOrder("O1", 100, 40, 40, "A", "B", "2024-01-01T10:00:00Z", "2024-01-02T10:00:00Z", false));
-        orders.add(createOrder("O2", 150, 50, 50, "A", "B", "2024-01-01T11:00:00Z", "2024-01-02T12:00:00Z", false));
+        orders.add(createOrder("O1", 100, 40, 40, "A", "B", "2024-01-01", "2024-01-02", false));
+        orders.add(createOrder("O2", 150, 50, 50, "A", "B", "2024-01-01", "2024-01-03", false));
         req.setOrders(orders);
 
         OptimizationResponse res = service.optimize(req);
@@ -55,8 +55,8 @@ class OptimizationServiceTest {
         req.setTruck(truck);
 
         List<OrderDto> orders = new ArrayList<>();
-        orders.add(createOrder("O1", 500, 60, 60, "A", "B", "2024-01-01T10:00:00Z", "2024-01-02T10:00:00Z", false));
-        orders.add(createOrder("O2", 600, 55, 55, "A", "B", "2024-01-01T11:00:00Z", "2024-01-02T12:00:00Z", false));
+        orders.add(createOrder("O1", 500, 60, 60, "A", "B", "2024-01-01", "2024-01-03", false));
+        orders.add(createOrder("O2", 600, 55, 55, "A", "B", "2024-01-02", "2024-01-04", false));
         req.setOrders(orders);
 
         // They conflict over weight limit, only O2 should be picked
@@ -77,9 +77,9 @@ class OptimizationServiceTest {
 
         List<OrderDto> orders = new ArrayList<>();
         // O1 ends Jan 1
-        orders.add(createOrder("O1", 100, 10, 10, "A", "B", "2024-01-01T10:00:00Z", "2024-01-01T15:00:00Z", false));
+        orders.add(createOrder("O1", 100, 10, 10, "A", "B", "2024-01-01", "2024-01-01", false));
         // O2 starts Jan 2, completely isolated -> incompatible interval intersection
-        orders.add(createOrder("O2", 200, 10, 10, "A", "B", "2024-01-02T10:00:00Z", "2024-01-02T15:00:00Z", false));
+        orders.add(createOrder("O2", 200, 10, 10, "A", "B", "2024-01-02", "2024-01-02", false));
         req.setOrders(orders);
 
         OptimizationResponse res = service.optimize(req);
@@ -98,8 +98,8 @@ class OptimizationServiceTest {
         req.setTruck(truck);
 
         List<OrderDto> orders = new ArrayList<>();
-        orders.add(createOrder("O1", 100, 10, 10, "A", "B", "2024-01-01T10:00:00Z", "2024-01-02T10:00:00Z", true));
-        orders.add(createOrder("O2", 150, 10, 10, "A", "B", "2024-01-01T10:00:00Z", "2024-01-02T10:00:00Z", false));
+        orders.add(createOrder("O1", 100, 10, 10, "A", "B", "2024-01-01", "2024-01-02", true));
+        orders.add(createOrder("O2", 150, 10, 10, "A", "B", "2024-01-01", "2024-01-02", false));
         req.setOrders(orders);
 
         OptimizationResponse res = service.optimize(req);
@@ -140,8 +140,8 @@ class OptimizationServiceTest {
         o.setVolume_cuft(volume);
         o.setOrigin(origin);
         o.setDestination(dest);
-        o.setPickup_date(OffsetDateTime.parse(start));
-        o.setDelivery_date(OffsetDateTime.parse(end));
+        o.setPickup_date(LocalDate.parse(start));
+        o.setDelivery_date(LocalDate.parse(end));
         o.setIs_hazmat(hazmat);
         return o;
     }

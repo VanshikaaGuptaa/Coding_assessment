@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 
 public class OrderDto {
 
@@ -30,10 +30,10 @@ public class OrderDto {
     private String destination;
 
     @NotNull(message = "pickup_date is required")
-    private OffsetDateTime pickup_date;
+    private LocalDate pickup_date;
 
     @NotNull(message = "delivery_date is required")
-    private OffsetDateTime delivery_date;
+    private LocalDate delivery_date;
 
     @NotNull(message = "is_hazmat is required")
     @JsonProperty("is_hazmat")
@@ -88,19 +88,19 @@ public class OrderDto {
         this.destination = destination;
     }
 
-    public OffsetDateTime getPickup_date() {
+    public LocalDate getPickup_date() {
         return pickup_date;
     }
 
-    public void setPickup_date(OffsetDateTime pickup_date) {
+    public void setPickup_date(LocalDate pickup_date) {
         this.pickup_date = pickup_date;
     }
 
-    public OffsetDateTime getDelivery_date() {
+    public LocalDate getDelivery_date() {
         return delivery_date;
     }
 
-    public void setDelivery_date(OffsetDateTime delivery_date) {
+    public void setDelivery_date(LocalDate delivery_date) {
         this.delivery_date = delivery_date;
     }
 
